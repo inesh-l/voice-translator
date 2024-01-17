@@ -15,20 +15,13 @@ function App() {
     setInputText(e.target.value);
   };
 
-  const handleTranslate = async () => {
-    try {
-      // Wrap inputText in an array
-      const data = {
-        inputs: [inputText],
-        parameters: { tgt_lang: targetLanguage, src_lang: sourceLanguage },
-        options: { wait_for_model: true },
-      };
-  
-      const result = await query(data);
-      setTranslatedText(result[0].translation_text);
-    } catch (error) {
-      console.error('Translation error:', error);
-    }
+  const handleTranslate = () => {
+    // You can add your translation logic here
+    // For example, you can use a translation API like Google Translate or any other service
+
+    // For demonstration purposes, let's assume a simple translation function for now
+    let data = {"inputs": inputText, "parameters": {"tgt_lang": targetLanguage, "src_lang": sourceLanguage}, "options": {"wait_for_model": true}};
+    query(data).then((result) => {setTranslatedText(result[0].translation_text);});
   };
   async function query(data) {
     console.log(data);
@@ -50,7 +43,7 @@ function App() {
           <Card padding={4}>
             <Stack spacing={4}>
               <LanguageSelect text="Select Language to Translate" setLanguage={setSourceLanguage}></LanguageSelect>
-              <Input placeholder='Enter text...' />
+              <Input placeholder='Enter text...' onChange={handleInputChange}/>
             </Stack>
           </Card>
           <Button colorScheme='blue' onClick={handleTranslate} disabled={isTranslating}>{isTranslating ? 'Translating...' : 'Translate'}</Button>
@@ -67,45 +60,6 @@ function App() {
     </ChakraProvider>
   )
 }
-
-
-// <ChakraProvider>
-//   <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
-//     <Card>
-//       <LanguageSelect text="Select Language to Translate"></LanguageSelect>
-//       <Input placeholder='Enter text...' />
-//     </Card>
-//     <Button colorScheme='blue' onClick={handleTranslate} disabled={isTranslating}>{isTranslating ? 'Translating...' : 'Translate'}</Button>
-//     <Card>
-//       <LanguageSelect text="Select Language to Translate to"></LanguageSelect>
-//       <Text>{"/* Display translated text here */"}</Text>
-//     </Card>
-//   </SimpleGrid>
-// </ChakraProvider>
-
-
-
-
-// <ChakraProvider>
-// <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
-//   <Card>
-//   <Text as='b'>Enter text to translate</Text>
-//   <LanguageSelect text="Select language to translate"></LanguageSelect>
-//   <Input placeholder='Type text to translate' />
-//   </Card>
-//   <Button colorScheme='blue' onClick={handleTranslate} disabled={isTranslating}>{isTranslating ? 'Translating...' : 'Translate'}</Button>
-//   <Card>
-//     <Text as='b'>Translated Text</Text>
-//     <LanguageSelect text="Select language to translate to"></LanguageSelect>
-//     <Text>{"/* Display translated text here */"}</Text>
-//   </Card>
-// </SimpleGrid>
-// </ChakraProvider>
-
-
-
-
-
 
 
 // {/* <div className="app">
