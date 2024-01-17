@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { ChakraProvider, Select, Container, Text, Box, Flex, Spacer, Input, Square, Button, SimpleGrid, Card, Stack } from '@chakra-ui/react'
 import './App.css'
 import { LanguageSelect } from './components/LanguageSelect';
-import { translate } from 'johnny-five/lib/board.pins';
 
 function App() {
   const [sourceLanguage, setSourceLanguage] = useState('');
@@ -15,13 +14,20 @@ function App() {
     setInputText(e.target.value);
   };
 
-  const handleTranslate = () => {
-    // You can add your translation logic here
-    // For example, you can use a translation API like Google Translate or any other service
-
-    // For demonstration purposes, let's assume a simple translation function for now
-    let data = {"inputs": inputText, "parameters": {"tgt_lang": targetLanguage, "src_lang": sourceLanguage}, "options": {"wait_for_model": true}};
-    query(data).then((result) => {setTranslatedText(result[0].translation_text);});
+  const handleTranslate = async () => {
+    try {
+      // Wrap inputText in an array
+      const data = {
+        inputs: inputText,
+        parameters: { tgt_lang: targetLanguage, src_lang: sourceLanguage },
+        options: { wait_for_model: true },
+      };
+      
+      const result = await query(data);
+      setTranslatedText(result[0].translation_text);
+    } catch (error) {
+      console.error('Translation error:', error);
+    }
   };
   async function query(data) {
     console.log(data);
